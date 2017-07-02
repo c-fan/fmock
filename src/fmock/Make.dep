@@ -1,0 +1,22 @@
+CC ?= gcc
+DEPFLAG = -MM
+
+SRCS := $(shell ls *.c)
+
+ALLCODE := $(shell ls *.h ; ls *.c)
+
+DEPFILE=make.d
+DEPFILE_EXIST=$(shell test -f $(DEPFILE) && echo YES)
+
+$(DEPFILE): $(ALLCODE)
+	$(CC) $(DEPFLAG) $(CFLAGS) $(SRCS) > $@
+ 
+ifeq ($(DEPFILE_EXIST),YES)
+include $(DEPFILE)
+endif
+
+.PHONY: clean
+clean:
+	@echo clean up
+	rm -f $(DEPFILE)
+
