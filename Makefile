@@ -8,6 +8,7 @@ PRJ_LIBDIR = $(PRJDIR)/lib
 
 CFLAGS += -I$(PRJ_INCDIR)
 CFLAGS += -g -rdynamic
+CFLAGS += -std=c11
 
 export CFLAGS
 

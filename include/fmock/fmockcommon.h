@@ -36,9 +36,11 @@
  * data structure. I use list only to keep the total code small & don't want to
  * have too much overhead. Anyway, it's just a simple mock lib.
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-07	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-07 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-07-16 | add void type                    |
  *---------------------------------------------------------------------------
  */
 
@@ -71,7 +73,8 @@ typedef enum
 	FMOCK_TYPE_FLOAT = 'f',
 	FMOCK_TYPE_DOUBLE = 'd',
 	FMOCK_TYPE_STRING = 's',
-	FMOCK_TYPE_POINTER = 'p'
+	FMOCK_TYPE_POINTER = 'p',
+	FMOCK_TYPE_VOID = '\0'
 } fmock_type_t;
 
 extern fmock_data_t fmock_intData(long value);

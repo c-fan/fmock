@@ -32,9 +32,12 @@
  * The header file for fmock lib.
  *
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-07	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-07 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-07-16 | Support void function mock with  |
+ *|         |               |            |  FMOCK_DECLARE_MOCK_V            |
  *---------------------------------------------------------------------------
  */
 
@@ -68,15 +71,21 @@ extern int __fmock_end_use_mock(char* fname);
 	rtype fname(proto) \
 	{ \
 		rtype r; \
-		fmock_return_t data = __fmock(#fname,args); \
+		fmock_return_t data = __fmock(#fname,##args); \
 		r = *((rtype*)&(data.value)); \
 		return r; \
+	}
+#define FMOCK_DECLARE_MOCK_V(fname,rtype,proto,args...) \
+	rtype fname(proto) \
+	{ \
+		__fmock(#fname,##args); \
+		return; \
 	}
 #define FMOCK_DECLARE_ANOTHER_MOCK(fname,rtype,proto,args...) \
 	rtype __FMOCK_func_##fname(proto) \
 	{ \
 		rtype r; \
-		fmock_return_t data = __fmock(#fname,args); \
+		fmock_return_t data = __fmock(#fname,##args); \
 		r = *((rtype*)&(data.value)); \
 		return r; \
 	}
