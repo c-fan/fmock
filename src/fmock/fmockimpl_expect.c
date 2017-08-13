@@ -1,32 +1,34 @@
-//BSD 3-Clause License
-//
-//Copyright (c) 2017, Fan Chunquan HSMO
-//All rights reserved.
-//
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions are met:
-//
-//* Redistributions of source code must retain the above copyright notice, this
-//  list of conditions and the following disclaimer.
-//
-//* Redistributions in binary form must reproduce the above copyright notice,
-//  this list of conditions and the following disclaimer in the documentation
-//  and/or other materials provided with the distribution.
-//
-//* Neither the name of the copyright holder nor the names of its
-//  contributors may be used to endorse or promote products derived from
-//  this software without specific prior written permission.
-//
-//THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-//AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-//DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-//SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-//CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-//OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-//OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/*
+BSD 3-Clause License
+
+Copyright (c) 2017, Fan Chunquan HSMO
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 /*
  *---------------------------------------------------------------------------
@@ -51,10 +53,10 @@ void fmock_initExpectByFunc(char* fname)
 	fmock_list_append(&fmock_gExpects, pExpect);
 }
 
-// search fmock_expect_t by function name
+/* search fmock_expect_t by function name */
 static int fmock_expect_cmp(void * node, void * compValue)
 {
-	//node is fmock_expect_t
+	/* node is fmock_expect_t */
 	fmock_expect_t* pExp = (fmock_expect_t*) node;
 	char* fname = (char*) compValue;
 	return strcmp(pExp->fname, fname);
@@ -128,7 +130,7 @@ int fmock_expectCall(char* fname, fmock_data_checker_t checkers[])
 	fmock_expect_t* pExpect = fmock_searchExpectByFunc(fname);
 	if (!pFunc || !pExpect)
 	{
-		return -1; //FMOCK_ERROR;
+		return FMOCK_ERROR;
 	}
 	fmock_expectCall_t* pExpCall = (fmock_expectCall_t*) malloc(
 			sizeof(fmock_expectCall_t));
@@ -145,5 +147,5 @@ int fmock_expectCall(char* fname, fmock_data_checker_t checkers[])
 		fmock_list_append(&pExpCall->expectedParams, pExpParam);
 	}
 	fmock_list_append(&pExpect->expectedCalls, pExpCall);
-	return 0;
+	return FMOCK_OK;
 }
