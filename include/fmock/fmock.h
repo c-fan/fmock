@@ -41,6 +41,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *| 02      | Fan Chunquan  | 2017-07-16 | Support void function mock with  |
  *|         |               |            |  FMOCK_DECLARE_MOCK_V            |
  *---------------------------------------------------------------------------
+ *| 03      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
+ *---------------------------------------------------------------------------
  */
 
 #ifndef FMOCK_FMOCK_H_
@@ -52,6 +54,7 @@ extern "C"
 #endif
 
 #include <fmock/fmockcommon.h>
+#include <fmock/fmockfuncproto.h>
 #include <fmock/fmockexpect.h>
 #include <fmock/fmockreturn.h>
 #include <fmock/fmocktest.h>
@@ -92,6 +95,22 @@ extern int __fmock_end_use_mock(char* fname);
 		return r; \
 	}
 #define PROTO(...) __VA_ARGS__
+
+#define FMOCK_DECLARE_GENERIC_PARAM_TYPE(type, fmocktype) \
+	void* __fmock_parseParam_ ## fmocktype (va_list va) { \
+		void * gv = malloc(sizeof(type)); \
+		type v = va_arg(va,type); \
+		memcpy(gv, &v, sizeof(type)); \
+		return gv; \
+	} \
+	void __fmock_freeData_ ## fmocktype (void* gv) { \
+		free(gv); \
+	}
+#define FMOCK_USE_GENERIC_PARAM_TYPE(fname, index, fmocktype) \
+	do { \
+		fmock_declareParamParser(#fname, index, __fmock_parseParam_ ## fmocktype); \
+		fmock_declareParamFreer(#fname, index, __fmock_freeData_ ## fmocktype); \
+	} while(0);
 
 extern fmock_return_t __fmock(char* fname, ...);
 

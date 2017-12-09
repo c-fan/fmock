@@ -32,9 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-20	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-20 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
  *---------------------------------------------------------------------------
  */
 
@@ -42,6 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define FMOCK_FMOCKIMPL_FUNCSPEC_H_
 
 #include <fmock/fmockcommon.h>
+#include <fmock/fmockfuncproto.h>
 
 /**
  * function prototype
@@ -51,6 +54,8 @@ typedef struct
 	fmock_list_node_t listNode;
 	int index; /* which parameter... NOTE - index starting from 0. */
 	fmock_type_t paramType;
+	fmock_func_param_parser_proto_t parser;
+	fmock_func_param_freer_proto_t freer;
 } fmock_param_type_t;
 typedef fmock_list_t fmock_param_spec_t;
 
@@ -58,7 +63,7 @@ typedef struct
 {
 	fmock_type_t returnType; /* return type */
 	int paramNum; /* number of parameters */
-	fmock_param_spec_t paramSpec; /* parameters type */
+	fmock_param_spec_t paramSpec; /* parameters list type */
 } fmock_func_spec_t;
 
 typedef struct

@@ -28,43 +28,33 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*
- * Defines the call expects.
+ * The prototypes needed for function mock that accepts generic data type parameters.
+ *
  *---------------------------------------------------------------------------
  *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01      | Fan Chunquan  | 2017-05-07 | Creation                         |
- *---------------------------------------------------------------------------
- *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
+ *| 01      | Fan Chunquan  | 2017-12-09 | Creation                         |
  *---------------------------------------------------------------------------
  */
 
-#ifndef FMOCK_FMOCKEXPECT_H_
-#define FMOCK_FMOCKEXPECT_H_
+#ifndef FMOCK_FMOCKFUNCPROTO_H_
+#define FMOCK_FMOCKFUNCPROTO_H_
 
-#include <fmock/fmockcommon.h>
+#include <stdarg.h>
 
-#define FMOCK_CHECK_MATCH 0
-#define FMOCK_CHECK_UNMATCH 1
-typedef int (*fmock_check_proto_t)(void * data, void * refValue);
-typedef void (*fmock_data_free_proto_t)(void* data);
+typedef void* (*fmock_func_param_parser_proto_t)(va_list val);
+typedef void (*fmock_func_param_freer_proto_t)(void* gv);
 
-typedef struct fmock_data_checker_struct
-{
-	fmock_data_t compValue;
-	fmock_check_proto_t checkFunc; /* checking function */
-} fmock_data_checker_t;
+/*
+ * Designate parser for generic data type parameter, parameter index starting from 0.
+ */
+extern void fmock_declareParamParser(char* fname, const int index, fmock_func_param_parser_proto_t parser);
+/*
+ * Designate freer for generic data type parameter, parameter index starting from 0.
+ */
+extern void fmock_declareParamFreer(char* fname, int index, fmock_func_param_freer_proto_t freer);
 
-extern fmock_data_checker_t fmock_Any();
-#define FMOCK_ANY fmock_Any()
-
-extern fmock_data_checker_t fmock_generic_checker(void* refValue, fmock_check_proto_t checkFunc);
-#define FMOCK_PARAM_EXPECT(refValue, checkFunc) fmock_generic_checker(refValue, checkFunc)
-
-#include <fmock/fmockbuiltinchecker.h>
-
-extern int fmock_expectCall(char* fname, fmock_data_checker_t checkers[]);
-
-#endif /* FMOCK_FMOCKEXPECT_H_ */
+#endif /* FMOCK_FMOCKFUNCPROTO_H_ */

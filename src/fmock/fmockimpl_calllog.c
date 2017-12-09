@@ -36,6 +36,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------
  *| 01      | Fan Chunquan  | 2017-05-28 | Creation                         |
  *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
+ *---------------------------------------------------------------------------
  */
 
 #include <fmock/fmockcommon.h>
@@ -52,7 +54,17 @@ void fmock_clearCallLog()
 	for (; fmock_gCallLog.head;)
 	{
 		fmock_call_t* pCall = (fmock_call_t*) fmock_gCallLog.head;
-		fmock_list_clear(&pCall->params, free);
+		fmock_func_t* pfunc = (fmock_func_t*) fmock_searchFuncByName(pCall->fname);
+		fmock_param_spec_t* pParamSpecs = &pfunc->spec.paramSpec;
+		for (int paramIndex = 0; paramIndex < pfunc->spec.paramNum; paramIndex++) {
+			fmock_param_type_t* pPType = fmock_list_at(pParamSpecs, paramIndex);
+			fmock_calledParam_t* pCalledParam = fmock_list_at(&pCall->params, paramIndex);
+			if(pPType->freer) {
+				pPType->freer(pCalledParam->param.gv);
+			}
+			fmock_list_remove(&pCall->params,pCalledParam);
+			free(pCalledParam);
+		}
 		free(pCall->fname);
 		if (pCall->callStack)
 		{

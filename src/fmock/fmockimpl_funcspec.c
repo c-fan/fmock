@@ -32,9 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-20	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-20 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
  *---------------------------------------------------------------------------
  */
 
@@ -85,8 +87,12 @@ int fmock_initFunctionSpec(char* fname, char* argDefinition, char returnType)
 		case 'p':
 			ptype->paramType = FMOCK_TYPE_POINTER;
 			break;
+		case 'v':
+			ptype->paramType = FMOCK_TYPE_GENERIC;
+			break;
 		default:
 			/* unsupported type definition */
+			/* TODO shall not allow to continue */
 			validDef = 0;
 			free(ptype);
 			index--;
@@ -180,3 +186,16 @@ void fmock_clearAllFunctionSpecs()
 	fmock_list_clear(&fmock_gFunctionMocks, fmock_freeFunctionSpec);
 }
 
+void fmock_declareParamParser(char* fname, const int index, fmock_func_param_parser_proto_t parser) {
+	fmock_func_t* pfunc = (fmock_func_t*) fmock_searchFuncByName(fname);
+	fmock_param_spec_t* pParamSpecs = &pfunc->spec.paramSpec;
+	fmock_param_type_t* pPType = fmock_list_at(pParamSpecs, index);
+	pPType->parser = parser;
+}
+
+void fmock_declareParamFreer(char* fname, int index, fmock_func_param_freer_proto_t freer) {
+	fmock_func_t* pfunc = (fmock_func_t*) fmock_searchFuncByName(fname);
+	fmock_param_spec_t* pParamSpecs = &pfunc->spec.paramSpec;
+	fmock_param_type_t* pPType = fmock_list_at(pParamSpecs, index);
+	pPType->freer = freer;
+}

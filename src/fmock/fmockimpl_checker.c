@@ -32,9 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-20	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-20 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
  *---------------------------------------------------------------------------
  */
 
@@ -62,6 +64,18 @@ fmock_data_checker_t fmock_Any()
 	fmock_data_checker_t checker;
 	fmock_dataChecker_init(&checker);
 	checker.checkFunc = fmock_check_Any;
+	return checker;
+}
+
+/*
+ * Generic checker
+ */
+fmock_data_checker_t fmock_generic_checker(void* refValue, fmock_check_proto_t checkFunc)
+{
+	fmock_data_checker_t checker;
+	fmock_dataChecker_init(&checker);
+	checker.compValue.gv = refValue;
+	checker.checkFunc = checkFunc;
 	return checker;
 }
 

@@ -36,6 +36,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------
  *| 01      | Fan Chunquan  | 2017-05-20 | Creation                         |
  *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-09 | Support generic type parameters  |
+ *---------------------------------------------------------------------------
  */
 
 #include <fmock/fmock.h>
@@ -115,6 +117,12 @@ fmock_return_t __fmock(char* fname, ...)
 			break;
 		case FMOCK_TYPE_POINTER:
 			pParam->param.p = (void*)va_arg(val,void*);
+			break;
+		case FMOCK_TYPE_GENERIC:
+			pParam->param.gv = pPType->parser(val);
+			break;
+		default:
+			/* unsupported type definition, TODO shall not happen */
 			break;
 		}
 		fmock_list_append(&pCall->params, pParam);

@@ -44,6 +44,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------
  *| 02      | Fan Chunquan  | 2017-07-16 | add void type                    |
  *---------------------------------------------------------------------------
+ *| 03      | Fan Chunquan  | 2017-12-09 | add generic type parameters      |
+ *---------------------------------------------------------------------------
  */
 
 #ifndef FMOCK_FMOCKCOMMON_H_
@@ -66,6 +68,7 @@ typedef union
 	double d;
 	char * s;
 	void * p;
+	void * gv;
 } fmock_data_t;
 
 typedef enum
@@ -76,6 +79,7 @@ typedef enum
 	FMOCK_TYPE_DOUBLE = 'd',
 	FMOCK_TYPE_STRING = 's',
 	FMOCK_TYPE_POINTER = 'p',
+	FMOCK_TYPE_GENERIC = 'v',
 	FMOCK_TYPE_VOID = '\0'
 } fmock_type_t;
 
