@@ -32,9 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*
  *---------------------------------------------------------------------------
- *| VERSION	| AUTHOR		| DATE			| NOTE							|
+ *| VERSION | AUTHOR        | DATE       | NOTE                             |
  *---------------------------------------------------------------------------
- *| 01		| Fan Chunquan	| 2017-05-28	| Creation						|
+ *| 01      | Fan Chunquan  | 2017-05-28 | Creation                         |
+ *---------------------------------------------------------------------------
+ *| 02      | Fan Chunquan  | 2017-12-10 | Bug fix                          |
  *---------------------------------------------------------------------------
  */
 
@@ -68,7 +70,7 @@ fmock_result_t* __fmock_verify_result(char* tname)
 	}
 	fmock_funcRunSum_t* pFuncRunSum =
 			(fmock_funcRunSum_t*) fmock_gFuncRunSummaries.head;
-	if (pFuncRunSum)
+	while (pFuncRunSum)
 	{
 		pFuncRunSum->result = FMOCK_PASS;
 		if (pFuncRunSum->unexpected != 0)
